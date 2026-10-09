@@ -82,6 +82,9 @@ def receive_message(other: socket.socket) -> str:
     new_msg = True
     while True:
         msg = other.recv(16)
+        if not msg: # if other side closes connection, recv returns empty bytes, causing error
+            raise ConnectionResetError("recv() returned empty: Connection closed by the other side.")
+
         if new_msg:
             msglen = int(msg[:HEADERSIZE])
             new_msg = False
