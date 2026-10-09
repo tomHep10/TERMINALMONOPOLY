@@ -610,8 +610,12 @@ def monopoly_controller(unit_test) -> None:
         print("Error: Monopoly game not started.")
         return
     sleep(5) # Temporary sleep to give all players time to connect to the receiver TODO remove this and implement a better way to check all are connected to rcvr
-    net.send_notif(clients[mply.turn].socket, mply.get_gameboard() + ss.set_cursor_str(0, 38) + "Welcome to Monopoly! It's your turn. Type roll to roll the dice.", "MPLY:")
-    add_to_output_area("Monopoly", "Sent gameboard to player 0.")
+    try:
+        net.send_notif(clients[mply.turn].socket, mply.get_gameboard() + ss.set_cursor_str(0, 38) + "Welcome to Monopoly! It's your turn. Type roll to roll the dice.", "MPLY:")
+        add_to_output_area("Monopoly", "Sent gameboard to player 0.")
+    except OSError:
+        add_to_output_area("Monopoly", f"Player turn: {mply.turn}. Disconnected")
+        mply.end_turn()
     last_turn = 0
     while True:
         sleep(1)
