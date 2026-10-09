@@ -556,6 +556,8 @@ if __name__ == "__main__":
     # Prints help in quadrant 2 to orient player.
     TERMINALS[1].update(ss.g.get('help'), padding=True)
     get_input()
+    for s in sockets:
+        s.close()
     # ss.print_w_dots("Goodbye!")
 
 def shutdown():
